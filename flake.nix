@@ -299,7 +299,7 @@
 
         apps = {
           antigravity = {
-            type = "program";
+            type = "app";
             program = "${self.packages.${system}.antigravity}/bin/antigravity";
           };
           default = self.apps.${system}.antigravity;
