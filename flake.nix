@@ -96,6 +96,7 @@
               "''${gappsWrapperArgs[@]}" \
               --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath runtimeLibs}" \
               --prefix LD_LIBRARY_PATH : "$out/opt/antigravity" \
+              --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.xdg-utils ]}" \
               --set ELECTRON_IS_DEV 0
 
             # Install icon
