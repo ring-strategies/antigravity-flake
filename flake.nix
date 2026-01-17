@@ -82,6 +82,20 @@
           dontBuild = true;
           dontWrapGApps = true;
 
+          desktopItems = [
+            (pkgs.makeDesktopItem {
+              name = "antigravity";
+              desktopName = "Google Antigravity";
+              comment = "Google Antigravity Application";
+              exec = "antigravity %U";
+              icon = "antigravity";
+              categories = [ "Development" "Utility" ];
+              startupNotify = true;
+              startupWMClass = "Antigravity";
+              mimeTypes = [ "x-scheme-handler/antigravity" ];
+            })
+          ];
+
           sourceRoot = ".";
 
           installPhase = ''
@@ -115,20 +129,7 @@ XDGWRAPPER
             cp $out/opt/antigravity/resources/app/resources/linux/code.png \
                $out/share/icons/hicolor/512x512/apps/antigravity.png
 
-            # Install desktop file
-            mkdir -p $out/share/applications
-            cat > $out/share/applications/antigravity.desktop <<EOF
-            [Desktop Entry]
-            Name=Google Antigravity
-            Comment=Google Antigravity Application
-            Exec=$out/bin/antigravity %U
-            Icon=antigravity
-            Type=Application
-            Categories=Development;Utility;
-            StartupNotify=true
-            StartupWMClass=Antigravity
-            MimeType=x-scheme-handler/antigravity;
-            EOF
+
 
             # Install shell completions
             mkdir -p $out/share/bash-completion/completions
