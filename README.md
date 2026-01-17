@@ -7,7 +7,7 @@ A NixOS flake and module for running Google Antigravity on the Linux desktop.
 ### Quick Run (without installation)
 
 ```bash
-nix run git+ssh://forgejo@git.pie.bread/bread/antigravity.git
+nix run github:ring-strategies/antigravity-flake
 ```
 
 Or from a local checkout:
@@ -24,7 +24,7 @@ Add to your `flake.nix`:
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    antigravity.url = "git+ssh://forgejo@git.pie.bread/bread/antigravity.git";
+    antigravity.url = "github:ring-strategies/antigravity-flake";
   };
 
   outputs = { self, nixpkgs, antigravity, ... }: {
@@ -56,7 +56,7 @@ Add to your `flake.nix`:
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    antigravity.url = "git+ssh://forgejo@git.pie.bread/bread/antigravity.git";
+    antigravity.url = "github:ring-strategies/antigravity-flake";
   };
 
   outputs = { self, nixpkgs, home-manager, antigravity, ... }: {
@@ -82,7 +82,7 @@ Add to your NixOS configuration:
 
 ```nix
 {
-  inputs.antigravity.url = "git+ssh://forgejo@git.pie.bread/bread/antigravity.git";
+  inputs.antigravity.url = "github:ring-strategies/antigravity-flake";
 
   outputs = { self, nixpkgs, antigravity, ... }: {
     nixosConfigurations.your-host = nixpkgs.lib.nixosSystem {
