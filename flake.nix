@@ -90,13 +90,24 @@
             mkdir -p $out/opt/antigravity
             cp -r Antigravity/* $out/opt/antigravity/
 
+            # Create a clean xdg-open wrapper that doesn't inherit LD_LIBRARY_PATH
+            # This prevents the browser from being launched with incorrect library paths
+            mkdir -p $out/lib/antigravity-xdg-wrapper
+            cat > $out/lib/antigravity-xdg-wrapper/xdg-open <<XDGWRAPPER
+#!/bin/sh
+unset LD_LIBRARY_PATH
+unset LD_PRELOAD
+exec ${pkgs.xdg-utils}/bin/xdg-open "\$@"
+XDGWRAPPER
+            chmod +x $out/lib/antigravity-xdg-wrapper/xdg-open
+
             # Create wrapper script
             mkdir -p $out/bin
             makeWrapper $out/opt/antigravity/antigravity $out/bin/antigravity \
               "''${gappsWrapperArgs[@]}" \
               --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath runtimeLibs}" \
               --prefix LD_LIBRARY_PATH : "$out/opt/antigravity" \
-              --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.xdg-utils ]}" \
+              --prefix PATH : "$out/lib/antigravity-xdg-wrapper" \
               --set ELECTRON_IS_DEV 0
 
             # Install icon
@@ -209,9 +220,10 @@
             # Enable necessary services for Electron apps
             services.dbus.enable = lib.mkDefault true;
 
-            # XDG portal for file dialogs, etc.
+            # XDG portal for file dialogs and URL opening
             xdg.portal = {
               enable = lib.mkDefault true;
+              xdgOpenUsePortal = lib.mkDefault true;
             };
           };
         };
